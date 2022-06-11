@@ -1,5 +1,6 @@
 import sys
 import argparse
+from opcodes import opcodes
 
 
 class Puffy():
