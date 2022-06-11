@@ -1,24 +1,11 @@
 from literal import Literal
-from value import Value
+from value import ValueEnum
 
 NINETY_FIVE = 95  # todo: why 95
 
 
-class MacroEnum():
-    # Yikes, python enums
-    def __init__(self, variant: str, **kwargs):
-        if variant == "VALUES":
-            self.values = Value(**kwargs)
-        elif variant == "MACRO":
-            self.macro = Macro(**kwargs)
-        elif variant == "JUMPTABLE":
-            self.JumpTable = Macro(**kwargs)
-        else:
-            raise NameError("Must be one of: VALUES, MACRO, JUMPTABLE")
-
-
 class Macro():
-    def __init__(self, name: str, idx: int, args: list[str], content: list[Value]):
+    def __init__(self, name: str, idx: int, args: list[str], content: list[ValueEnum]):
         if len(args) == 1 and args[0] == "":
             self.args = []
         else:
@@ -39,3 +26,15 @@ def push_n(n: int):
         raise ValueError(f"can't push value {n}; not in range [1,32]")
     else:
         return Literal(NINETY_FIVE+n)
+
+
+# Yikes, python enums
+class MacroEnum():
+    variant: str
+    enum: ValueEnum | Macro | JumpTable
+
+    def __init__(self, variant: str, **kwargs):
+        self.variant = variant
+        self.enum = {"VALUES": ValueEnum(**kwargs),
+                     "MACRO": Macro(**kwargs),
+                     "JUMPTABLE": JumpTable(**kwargs)}[variant]

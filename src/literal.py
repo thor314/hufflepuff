@@ -1,6 +1,6 @@
 
 class Literal():
-    bytess: bytes = bytes()
+    bytess: bytes
 
     def __init__(self, value: str | int):
         value = str(value)
