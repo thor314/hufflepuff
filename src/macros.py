@@ -1,17 +1,20 @@
-from value import Value, Literal
-# todo: why 95
-NINETY_FIVE = 95
+from literal import Literal
+from value import Value
+
+NINETY_FIVE = 95  # todo: why 95
 
 
 class MacroEnum():
     # Yikes, python enums
     def __init__(self, variant: str, **kwargs):
-        if variant == "MACRO":
+        if variant == "VALUES":
+            self.values = Value(**kwargs)
+        elif variant == "MACRO":
             self.macro = Macro(**kwargs)
         elif variant == "JUMPTABLE":
             self.JumpTable = Macro(**kwargs)
         else:
-            raise NameError("Must be one of: MACRO, JUMPTABLE")
+            raise NameError("Must be one of: VALUES, MACRO, JUMPTABLE")
 
 
 class Macro():
