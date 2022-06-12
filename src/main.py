@@ -2,7 +2,6 @@ import sys
 import argparse
 from opcodes import opcodes
 
-
 class Puffy():
     about = "EVM macro language made snek"
     version = "0.0.1"
@@ -19,7 +18,6 @@ class Puffy():
                         help="path to output file")
     args = parser.parse_args()
     print(args)
-
 
 def run() -> None:
     """set up CLI with `argparse`"""
@@ -44,14 +42,12 @@ def run() -> None:
         print("todo: output")
         # save_json(puffy.args.output.strip(), compiled)
 
-
 def main() -> None:
     try:
         run()
     except Exception as e:
         print(f"puffy: Jigglyyyyyyyyyyyyyy.....\n\n{e}")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()
