@@ -1,86 +1,51 @@
-import enum
-from typing_extensions import Self
-from value_constant import Constant, Quote
-from value_mathops import MathOp
+from value_utils.mathops import MathOpsEnum
 from literal import Literal
-from value_call import *
+from value_utils.call import SizeCallEnum, StartCall, MacroCall, JumpTableCall
+from value_utils.types import *
 
-# Expecc bugs
-class ValueEnum(enum.Enum):
-    LABEL = 1
-    JUMPDEST = 2
-    JUMPTABLEDEST = 3
+class ValueEnum():
+    name: str
+    label: None | Label = None
+    jumpdest: None | JumpDest = None
+    jumptabledest: None | JumpTableDest = None
+    constant: None | Constant = None
+    opcode: None | Opcode = None
+    literal: None | Literal = None
+    quote: None | Quote = None
+    mathop: None | MathOpsEnum = None
+    sizecall: None | SizeCallEnum = None
+    startcall: None | StartCall = None
+    macrocall: None | MacroCall = None
+    jumptablecall: None | JumpTableCall = None
 
-    def __new__(cls: type[Self], variant: str, **kwargs) -> Self:
-        cls._name_ = variant
-        {
-            "LABEL": cls.label_init(**kwargs),
-            "JUMPDEST": cls.jd_init(**kwargs),  # do nothing
-            "JUMPTABLEDEST": cls.jtd_init(**kwargs),
-            "CONSTANT": cls.constant_init(**kwargs),
-            "OPCODE": cls.opcode_init(**kwargs),
-            "LITERAL": cls.literal_init(**kwargs),
-            "QUOTE": cls.quote_init(**kwargs),
-            "MATHOP": cls.mathop_init(**kwargs),
-            "SIZECALL": cls.sizecall_init(**kwargs),
-            "STARTCALL": cls.startcall_init(**kwargs),
-            "MACROCALL": cls.macrocall_init(**kwargs),
-            "JUMPTABLECALL": cls.jtcall_init(**kwargs),
-        }[variant]
-
-        return cls
-
-    @classmethod
-    def label_init(cls, **kwargs):
-        cls.name_ = kwargs["name"]
-        cls.ns = kwargs["ns"]
-
-    @classmethod
-    def jd_init(cls, **kwargs):
-        cls.name_ = kwargs["name"]
-
-    @classmethod
-    def jtd_init(cls, **kwargs):
-        cls.name_ = kwargs["name"]
-
-    @classmethod
-    def constant_init(cls, **kwargs):
-        cls.name_ = kwargs["name"]
-        cls._value_: type[Self] = kwargs["value"]
-
-    @classmethod
-    def opcode_init(cls, **kwargs):
-        cls.op = kwargs["op"]
-
-    @classmethod
-    def literal_init(cls, **kwargs):
-        cls.literal: Literal = kwargs["literal"]
-
-    @classmethod
-    def quote_init(cls, **kwargs):
-        cls._value_: type[Self] = kwargs["value"]
-
-    # todo
-    @classmethod
-    def mathop_init(cls, **kwargs):
-        cls.mathop = kwargs["mathop"]
-
-    # todo
-    @classmethod
-    def sizecall_init(cls, **kwargs):
-        # macro|jt
-        cls._value_ = kwargs["value"]
-
-    @classmethod
-    # todo
-    def startcall_init(cls, **kwargs):
-        cls._value_ = kwargs["value"]
-
-    @classmethod
-    def macrocall_init(cls, **kwargs):
-        cls._name = kwargs["name"]
-        cls.args = kwargs["args"]
-
-    @classmethod
-    def jtcall_init(cls, **kwargs):
-        cls._name = kwargs["name"]
+    def __init__(self,
+                 name: str,
+                 label: None | Label = None,
+                 jumpdest: None | JumpDest = None,
+                 jumptabledest: None | JumpTableDest = None,
+                 constant: None | Constant = None,
+                 opcode: None | Opcode = None,
+                 literal: None | Literal = None,
+                 quote: None | Quote = None,
+                 mathop: None | MathOpsEnum = None,
+                 sizecall: None | SizeCallEnum = None,
+                 startcall: None | StartCall = None,
+                 macrocall: None | MacroCall = None,
+                 jumptablecall: None | JumpTableCall = None,
+                 ):
+        assert name in ["LABEL", "JUMPDEST", "LABEL", "JUMPDEST", "JUMPTABLEDEST", "CONSTANT ",
+                        "OPCODE ", "LITERAL", "QUOTE", "MATHOP", "SIZECALL", "STARTCALL", "MACROCALL", "JUMPTABLECALL"]
+        self._name_ = name
+        match name:
+            case "LABEL": self.label = label
+            case "JUMPDEST": self.jumpdest = jumpdest
+            case "JUMPTABLEDEST": self.jumptabledest = jumptabledest
+            case "CONSTANT": self.constant = constant
+            case "OPCODE": self.opcode = opcode
+            case "LITERAL": self.literal = literal
+            case "QUOTE": self.quote = quote
+            case "MATHOP": self.mathop = mathop
+            case "SIZECALL": self.sizecall = sizecall
+            case "STARTCALL": self.startcall = startcall
+            case "MACROCALL": self.macrocall = macrocall
+            case "JUMPTABLECALL": self.jumptablecall = jumptablecall
