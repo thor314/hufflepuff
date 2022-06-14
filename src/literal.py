@@ -1,3 +1,4 @@
+import numpy as np
 from typing_extensions import Self
 
 NINETY_FIVE = 95  # todo: why 95
@@ -23,19 +24,22 @@ class Literal():
         return str(self.byte_v.decode('utf-8'))
 
     def __add__(self, right: Self) -> Self:
-        return Literal(int(self.byte_v)+ int(right.byte_v))
+        return Literal(int(self.byte_v) + int(right.byte_v))
 
     def __sub__(self, right) -> Self:
-        return Literal(int(self.byte_v)- int(right.byte_v))
+        return Literal(int(self.byte_v) - int(right.byte_v))
 
     def __mul__(self, right) -> Self:
-        return Literal(int(self.byte_v)* int(right.byte_v))
+        return Literal(int(self.byte_v) * int(right.byte_v))
 
     def __floordiv__(self, right) -> Self:
-        return Literal(int(self.byte_v)// int(right.byte_v))
+        return Literal(int(self.byte_v) // int(right.byte_v))
 
-    # def to_hex(self) -> bytes:
-    #     pass
+    def __int__(self) -> int:
+        return int(self.byte_v)
+
+    def __index__(self) -> int:
+        return self.__int__()
 
     @classmethod
     def push_n(cls: type[Self], n: int) -> Self:

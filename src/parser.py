@@ -37,9 +37,6 @@ def parse_value(s: str, c: Context) -> ValueEnum:
     s.strip()
     if s == "":
         raise Exception("attempted to parse empty value")
-    
-    if Math
-
     pass
 
 def parse_sizecall(s: str, c: Context) -> ValueEnum:
